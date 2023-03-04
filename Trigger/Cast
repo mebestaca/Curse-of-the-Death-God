@@ -1,0 +1,159 @@
+Curse of Terror Cast
+
+    Events
+
+        Unit - A unit Starts the effect of an ability
+
+    Conditions
+
+        (Ability being cast) Equal to CT_Ability
+
+    Actions
+
+        -------- - --------
+
+        -------- store temporary values --------
+
+        Set CT_TempCaster = (Triggering unit)
+
+        Set CT_TempPlayer = (Triggering player)
+
+        Set CT_Level = (Level of CT_Ability for CT_TempCaster)
+
+        Set CT_Point = (Target point of ability being cast)
+
+        Set CT_TempAgiDamage = (((Real((Agility of CT_TempCaster (Include bonuses)))) x CT_AgilityDamage[CT_Level]) x 0.01)
+
+        Set CT_TempStrDamage = (((Real((Strength of CT_TempCaster (Include bonuses)))) x CT_StrengthDamage[CT_Level]) x 0.01)
+
+        Set CT_TempIntDamage = (((Real((Intelligence of CT_TempCaster (Include bonuses)))) x CT_IntelligenceDamage[CT_Level]) x 0.01)
+
+        Set CT_TempDamage = ((CT_TempAgiDamage + CT_TempStrDamage) + (CT_TempIntDamage + CT_AbsoluteDamage[CT_Level]))
+
+        Set CT_TempGroup = (Units within CT_AoE[CT_Level] of CT_Point)
+
+        -------- - --------
+
+        -------- create special effects --------
+
+        Special Effect - Create a special effect at CT_Point using CT_AreaSFX
+
+        Special Effect - Destroy (Last created special effect)
+
+        -------- - --------
+
+        -------- move dummy --------
+
+        Unit - Set level of CT_DummyAbility for CT_Dummy to CT_Level
+
+        Set CT_Point = (Position of CT_Picked)
+
+        Custom script:   call SetUnitX(udg_CT_Dummy, GetLocationX(udg_CT_Point))
+
+        Custom script:   call SetUnitY(udg_CT_Dummy, GetLocationY(udg_CT_Point))
+
+        Custom script:   call RemoveLocation(udg_CT_Point)
+
+        -------- - --------
+
+        -------- affected units --------
+
+        Unit Group - Pick every unit in CT_TempGroup and do (Actions)
+
+            Loop - Actions
+
+                Set CT_Picked = (Picked unit)
+
+                If (All Conditions are True) then do (Then Actions) else do (Else Actions)
+
+                    If - Conditions
+
+                        (CT_Picked is A structure) Equal to False
+
+                        (CT_Picked is Magic Immune) Equal to False
+
+                        (CT_Picked belongs to an enemy of CT_TempPlayer) Equal to True
+
+                        (CT_Picked is alive) Equal to True
+
+                    Then - Actions
+
+                        -------- - --------
+
+                        -------- checks if the unit is already affected --------
+
+                        If (All Conditions are True) then do (Then Actions) else do (Else Actions)
+
+                            If - Conditions
+
+                                (CT_Picked has buff CT_Buff) Equal to False
+
+                            Then - Actions
+
+                                -------- - --------
+
+                                -------- if no, add it to the group --------
+
+                                Set CT_Index = (CT_Index + 1)
+
+                                Set CT_Caster[CT_Index] = CT_TempCaster
+
+                                Set CT_Target[CT_Index] = CT_Picked
+
+                                Set CT_Damage[CT_Index] = CT_TempDamage
+
+                                If (All Conditions are True) then do (Then Actions) else do (Else Actions)
+
+                                    If - Conditions
+
+                                        CT_Index Equal to 1
+
+                                    Then - Actions
+
+                                        Trigger - Turn on Curse of Terror Duration <gen>
+
+                                        Trigger - Turn on Curse of Terror Effect <gen>
+
+                                    Else - Actions
+
+                            Else - Actions
+
+                                -------- - --------
+
+                                -------- if yes, apply new damage --------
+
+                                For each (Integer CT_Looper) from 1 to CT_Index, do (Actions)
+
+                                    Loop - Actions
+
+                                        If (All Conditions are True) then do (Then Actions) else do (Else Actions)
+
+                                            If - Conditions
+
+                                                CT_Picked Equal to CT_Target[CT_Looper]
+
+                                            Then - Actions
+
+                                                Set CT_Damage[CT_Looper] = CT_TempDamage
+
+                                            Else - Actions
+
+                        -------- - --------
+
+                        -------- add buff to picked units --------
+
+                        Unit - Order CT_Dummy to Neutral Alchemist - Acid Bomb CT_Picked
+
+                    Else - Actions
+
+                        -------- - --------
+
+                        -------- clean up --------
+
+                        Set CT_Picked = No unit
+
+        -------- - --------
+
+        -------- clean up --------
+
+        Custom script:   call DestroyGroup(udg_CT_TempGroup)
