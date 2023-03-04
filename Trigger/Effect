@@ -1,0 +1,37 @@
+Curse of Terror Effect
+
+    Events
+
+        Unit - A unit Starts the effect of an ability
+
+    Conditions
+
+        ((Triggering unit) has buff CT_Buff) Equal to True
+
+    Actions
+
+        Set CT_TempCaster = (Triggering unit)
+
+        -------- - --------
+
+        -------- find and deal damage to casting unit --------
+
+        For each (Integer CT_Looper) from 1 to CT_Index, do (Actions)
+
+            Loop - Actions
+
+                If (All Conditions are True) then do (Then Actions) else do (Else Actions)
+
+                    If - Conditions
+
+                        CT_TempCaster Equal to CT_Target[CT_Looper]
+
+                    Then - Actions
+
+                        Unit - Cause CT_Caster[CT_Looper] to damage CT_Target[CT_Looper], dealing CT_Damage[CT_Looper] damage of attack type CT_AttackType and damage type CT_DamageType
+
+                        Special Effect - Create a special effect attached to the CT_Attach of CT_Target[CT_Looper] using CT_UnitSFX
+
+                        Special Effect - Destroy (Last created special effect)
+
+                    Else - Actions
