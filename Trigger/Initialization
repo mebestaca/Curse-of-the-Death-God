@@ -1,0 +1,133 @@
+Curse of Terror Init
+
+    Events
+
+        Map initialization
+
+    Conditions
+
+    Actions
+
+        -------- set the main ability --------
+
+        Set CT_Ability = Curse of Terror
+
+        -------- - --------
+
+        -------- set the dummy's ability --------
+
+        Set CT_DummyAbility = Curse of Terror (Dummy)
+
+        -------- - --------
+
+        -------- set the buff of the ability --------
+
+        Set CT_Buff = Curse of Terror (Buff)
+
+        -------- - --------
+
+        -------- set the AoE --------
+
+        Set CT_AoE[1] = 300.00
+
+        Set CT_AoE[2] = 350.00
+
+        Set CT_AoE[3] = 400.00
+
+        -------- - --------
+
+        -------- set the damage type --------
+
+        Set CT_DamageType = Normal
+
+        -------- - --------
+
+        -------- set the attack type --------
+
+        Set CT_AttackType = Spells
+
+        -------- - --------
+
+        -------- set the percent of strength bonus damage --------
+
+        -------- Note: to deal 30% damage set the value to 30 not 0.3 --------
+
+        Set CT_StrengthDamage[1] = 0.00
+
+        Set CT_StrengthDamage[2] = 0.00
+
+        Set CT_StrengthDamage[3] = 0.00
+
+        -------- - --------
+
+        -------- set the percent of agility bonus damage --------
+
+        -------- Note: to deal 30% damage set the value to 30 not 0.3 --------
+
+        Set CT_AgilityDamage[1] = 0.00
+
+        Set CT_AgilityDamage[2] = 0.00
+
+        Set CT_AgilityDamage[3] = 0.00
+
+        -------- - --------
+
+        -------- set the percent of intelligence bonus damage --------
+
+        -------- Note: to deal 30% damage set the value to 30 not 0.3 --------
+
+        Set CT_IntelligenceDamage[1] = 5.00
+
+        Set CT_IntelligenceDamage[2] = 10.00
+
+        Set CT_IntelligenceDamage[3] = 15.00
+
+        -------- - --------
+
+        -------- set the constant damage --------
+
+        Set CT_AbsoluteDamage[1] = 60.00
+
+        Set CT_AbsoluteDamage[2] = 120.00
+
+        Set CT_AbsoluteDamage[3] = 180.00
+
+        -------- - --------
+
+        -------- Note: To set the ability's duration go to the object editor and look for the --------
+
+        -------- Curse of Terror (dummy) ability. Set up the duration to your liking. --------
+
+        -------- - --------
+
+        -------- set the special effects --------
+
+        Set CT_Attach = origin
+
+        Set CT_UnitSFX = Abilities\Spells\Items\AIil\AIilTarget.mdl
+
+        Set CT_AreaSFX = Abilities\Spells\Items\AItb\AItbTarget.mdl
+
+        -------- - --------
+
+        -------- set the dummy type --------
+
+        Set CT_DummyType = Dummy
+
+        -------- - --------
+
+        -------- preload and one dummy caster set up --------
+
+        Set CT_Point = (Random point in (Playable map area))
+
+        Unit - Create 1 CT_DummyType for Neutral Passive at CT_Point facing Default building facing degrees
+
+        Set CT_Dummy = (Last created unit)
+
+        Custom script:   call RemoveLocation(udg_CT_Point)
+
+        Unit - Add CT_Ability to CT_Dummy
+
+        Unit - Remove CT_Ability from CT_Dummy
+
+        Unit - Add CT_DummyAbility to CT_Dummy
