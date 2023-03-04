@@ -1,0 +1,55 @@
+Curse of Terror Duration
+
+    Events
+
+        Time - Every 0.03 seconds of game time
+
+    Conditions
+
+    Actions
+
+        For each (Integer CT_Looper) from 1 to CT_Index, do (Actions)
+
+            Loop - Actions
+
+                -------- - --------
+
+                -------- check if unit has buff --------
+
+                If (All Conditions are True) then do (Then Actions) else do (Else Actions)
+
+                    If - Conditions
+
+                        (CT_Target[CT_Looper] has buff CT_Buff) Equal to False
+
+                    Then - Actions
+
+                        -------- - --------
+
+                        -------- deindex --------
+
+                        Set CT_Caster[CT_Looper] = CT_Caster[CT_Index]
+
+                        Set CT_Target[CT_Looper] = CT_Target[CT_Index]
+
+                        Set CT_Damage[CT_Looper] = CT_Damage[CT_Index]
+
+                        Set CT_Looper = (CT_Looper - 1)
+
+                        Set CT_Index = (CT_Index - 1)
+
+                        If (All Conditions are True) then do (Then Actions) else do (Else Actions)
+
+                            If - Conditions
+
+                                CT_Index Equal to 0
+
+                            Then - Actions
+
+                                Trigger - Turn off (This trigger)
+
+                                Trigger - Turn off Curse of Terror Effect <gen>
+
+                            Else - Actions
+
+                    Else - Actions
